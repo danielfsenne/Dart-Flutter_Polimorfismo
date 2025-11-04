@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   return runApp(
@@ -15,27 +16,49 @@ void main() {
   );
 }
 
-class Dadoos extends StatelessWidget {
+class Dadoos extends StatefulWidget {
+  const Dadoos({super.key});
+
+  @override
+  State<Dadoos> createState() => _DadoosState();
+}
+
+class _DadoosState extends State<Dadoos> {
+ 
+  int numeroDadoEsquerda = 1;
+  int numeroDadoDireita = 1;
+
+  void alterarFaceDosDadoos(){
+   setState(() {
+     numeroDadoEsquerda = Random().nextInt(6) + 1;
+     numeroDadoDireita = Random().nextInt(6) + 1;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Row(children:[
       Expanded(
-        child: 
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset('imagens/dado1.png'),
-        )
+        child:TextButton(
+          onPressed: (){
+            alterarFaceDosDadoos();
+          },
+        child: Image.asset('imagens/dado$numeroDadoEsquerda.png'),
+        ),
        ),
       Expanded(
-        child: 
-         Padding(
-           padding: const EdgeInsets.all(8.0),
-           child: Image.asset('imagens/dado2.png'),
-         )
-       )
+        child:TextButton(
+          onPressed: () {
+            alterarFaceDosDadoos();          
+          },
+        child: Image.asset('imagens/dado$numeroDadoDireita.png'),
+        ),
+       ),
        ],
       ),
     );
   }
 }
+
+
