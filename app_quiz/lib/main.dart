@@ -26,25 +26,69 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> marcadorDePontos = [];
 
+  List<String> perguntas = [
+    'O metrô é um dos meios de transporte mais seguros do mundo.',
+    'A culinária brasileira é uma das melhores do mundo.',
+    'Vacas podem voar, assim como peixes utilizam os pés para andar.'
+  ];
+
+  List<bool> respostas = [
+    true,
+    true,
+    false
+  ];
+
+  int numeroDaQuestaoAtual = 0;
+
+  // --- Função para verificar a resposta ---
+  void verificarResposta(bool respostaUsuario) {
+    bool respostaCorreta = respostas[numeroDaQuestaoAtual];
+
+    setState(() {
+      // Adiciona ícone verde ou vermelho
+      if (respostaUsuario == respostaCorreta) {
+        marcadorDePontos.add(
+          Icon(Icons.check, color: Colors.green),
+        );
+      } else {
+        marcadorDePontos.add(
+          Icon(Icons.close, color: Colors.red),
+        );
+      }
+
+      // Avança para a próxima pergunta ou reinicia
+      if (numeroDaQuestaoAtual < perguntas.length - 1) {
+        numeroDaQuestaoAtual++;
+      } else {
+        // Reinicia o quiz
+        numeroDaQuestaoAtual = 0;
+        marcadorDePontos.clear();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
+        // Pergunta
         Expanded(
           flex: 5,
           child: Padding(
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'As perguntas serão exibidas aqui.',
+                perguntas[numeroDaQuestaoAtual],
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 25.0),
               ),
             ),
           ),
         ),
+
+        // Botão Verdadeiro
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(15.0),
@@ -55,16 +99,12 @@ class _QuizPageState extends State<QuizPage> {
                 textStyle: TextStyle(fontSize: 20.0),
               ),
               child: Text('Verdadeiro'),
-              onPressed: () {
-                setState(() {
-                  marcadorDePontos.add(
-                    Icon(Icons.check, color: Colors.green),
-                  );
-                });
-              },
+              onPressed: () => verificarResposta(true),
             ),
           ),
         ),
+
+        // Botão Falso
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(15.0),
@@ -75,16 +115,12 @@ class _QuizPageState extends State<QuizPage> {
                 textStyle: TextStyle(fontSize: 20.0),
               ),
               child: Text('Falso'),
-              onPressed: () {
-                setState(() {
-                  marcadorDePontos.add(
-                    Icon(Icons.close, color: Colors.red),
-                  );
-                });
-              },
+              onPressed: () => verificarResposta(false),
             ),
           ),
         ),
+
+        // Linha de pontos (acertos e erros)
         Row(
           children: marcadorDePontos,
         ),
@@ -92,9 +128,3 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 }
-
-/*
-pergunta1: 'O metrô é um dos meios de transporte mais seguros do mundo', verdadeiro,
-pergunta2: 'A culinária brasileira é uma das melhores do mundo.', verdadeiro,
-pergunta3: 'Vacas podem voar, assim como peixes utilizam os pés para andar.', falso,
-*/
