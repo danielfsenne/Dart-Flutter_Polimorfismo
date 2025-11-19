@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'perguntas.dart';
 
 void main() => runApp(QuizApp());
 
@@ -26,23 +27,28 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> marcadorDePontos = [];
 
-  List<String> perguntas = [
-    'O metrô é um dos meios de transporte mais seguros do mundo.',
-    'A culinária brasileira é uma das melhores do mundo.',
-    'Vacas podem voar, assim como peixes utilizam os pés para andar.'
-  ];
-
-  List<bool> respostas = [
-    true,
-    true,
-    false
+  List<Perguntas> bancoDePerguntas = [
+    Perguntas(
+      questao: 'O metrô é um dos meios de transporte mais seguros do mundo.',
+      respostaDaQuestao: true,
+    ),
+    Perguntas(
+      questao: 'A culinária brasileira é uma das melhores do mundo.',
+      respostaDaQuestao: true,
+    ),
+    Perguntas(
+      questao:
+          'Vacas podem voar, assim como peixes utilizam os pés para andar.',
+      respostaDaQuestao: false,
+    ),
   ];
 
   int numeroDaQuestaoAtual = 0;
 
   // --- Função para verificar a resposta ---
   void verificarResposta(bool respostaUsuario) {
-    bool respostaCorreta = respostas[numeroDaQuestaoAtual];
+    bool respostaCorreta =
+        bancoDePerguntas[numeroDaQuestaoAtual].respostaDaQuestao;
 
     setState(() {
       // Adiciona ícone verde ou vermelho
@@ -57,7 +63,7 @@ class _QuizPageState extends State<QuizPage> {
       }
 
       // Avança para a próxima pergunta ou reinicia
-      if (numeroDaQuestaoAtual < perguntas.length - 1) {
+      if (numeroDaQuestaoAtual < bancoDePerguntas.length - 1) {
         numeroDaQuestaoAtual++;
       } else {
         // Reinicia o quiz
@@ -80,7 +86,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                perguntas[numeroDaQuestaoAtual],
+                bancoDePerguntas[numeroDaQuestaoAtual].questao,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 25.0),
               ),
